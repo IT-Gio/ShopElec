@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Shop</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/main.js' %}" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <!-- Burger menu -->
+            <button class="burger" id="burger">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <!-- Logo -->
+            <a href="#" class="logo">My Shop</a>
+
+            <!-- Search bar -->
+            <input type="text" placeholder="Search...">
+
+            <!-- Always-visible cart button -->
+            <a href="{% url 'cart' %}" class="cart-btn">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-count" style="display:none;">0</span>
+            </a>
+
+            <!-- Right-side links (hidden in mobile unless opened) -->
+            <div class="nav-links" id="nav-links">
+                <a href="#">Login</a>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Sidebar for sorting (desktop) -->
+    <aside id="sidebar">
+        <h2>Sort By</h2>
+        <ul>
+            <li><button data-sort="price-asc">Price: Low to High</button></li>
+            <li><button data-sort="price-desc">Price: High to Low</button></li>
+            <li><button data-sort="rating">Rating</button></li>
+            <li><button data-sort="newest">Newest</button></li>
+        </ul>
+
+        <h2>Categories</h2>
+        <ul>
+            {% for category in categories %}
+                <li><button data-category="{{ category }}">{{ category }}</button></li>
+            {% empty %}
+                <li><em>No categories available</em></li>
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <!-- Mobile sort bar (hidden on desktop) -->
+    <aside id="mobile-sort">
+        <label for="sort-select">Sort By:</label>
+        <select id="sort-select"></select>
+
+        <label for="category-select">Category:</label>
+        <select id="category-select">
+            <option value="">All</option>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% empty %}
+                <option disabled>No categories available</option>
+            {% endfor %}
+        </select>
+    </aside>
+
+    <main>
+        <div id="products-container"></div>
+        <div id="pagination">
+            <button id="prev-page">Previous</button>
+            <button id="next-page">Next</button>
+        </div>
+    </main>
+</body>
+</html>

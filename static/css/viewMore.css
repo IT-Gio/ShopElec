@@ -1,0 +1,231 @@
+main {
+    margin-left: 0px !important;
+}
+
+
+
+/* Full Product Page Grid */
+.product-page {
+    display: flex;
+    gap: 30px;
+    padding: 2rem;
+    min-height: 59vh; 
+}
+
+/* Left Panel (Image + Reviews) */
+.left-panel, .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+    
+}
+
+/* Product Image */
+.product-image img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: var(--border-radius2);
+    background: var(--fifth-color);
+    box-shadow: var(--box-shadow);
+    padding: 10px;
+}
+
+.description {
+    background: var(--fifth-color);
+    padding: 20px;
+    border-radius: var(--border-radius2);
+    box-shadow: var(--box-shadow);
+    height: 200px;
+
+}
+
+.description h2 {
+    color: var(--fourth-color);
+    font-size: 28px;
+    margin-bottom: 1rem;
+}
+
+
+/* Reviews Section */
+.review-card {
+    background: var(--third-color);
+    padding: 10px 15px;
+    border-radius: var(--border-radius2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.review-card .review-user {
+    font-family: "myFontBold", sans-serif;
+    margin-bottom: 5px;
+}
+
+.review-card .review-text {
+    font-size: 14px;
+    color: var(--fourth-color);
+}
+
+/* Right Panel (Info + Add Review + Go Back) */
+
+
+/* Product Info */
+.product-info {
+    background: var(--fifth-color);
+    padding: 25px;
+    border-radius: var(--border-radius2);
+    box-shadow: var(--box-shadow);
+    display: grid;
+    gap: 13px;
+    height: 400px;
+}
+.product-info h1 {
+    margin-top: 0;
+    font-family: "myFontBold", sans-serif;
+    color: var(--fourth-color);
+}
+.product-info p {
+    margin: 5px 0;
+}
+.price {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-family: "myFontBold", sans-serif;
+}
+.stock {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: var(--fourth-color);
+}
+
+/* Rating Stars */
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+.rating i {
+    color: var(--primary-color);
+}
+
+/* Add Review Section */
+.add-review {
+    background: var(--fifth-color);
+    padding: 20px;
+    border-radius: var(--border-radius2);
+    box-shadow: var(--box-shadow);
+    height: 200px;
+}
+.add-review h2 {
+    font-family: "myFontBold", sans-serif;
+    margin-bottom: 1rem;
+    color: var(--fourth-color);
+}
+
+/* Go Back Button (outside main grid) */
+.go-back {
+    text-align: left;
+    padding: 1rem 2rem;
+}
+
+.back-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background: var(--primary-color);
+    color: var(--fifth-color);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    font-family: "myFontBold", sans-serif;
+    transition: 0.3s;
+}
+.back-btn:hover {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .product-page {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+    }
+
+    .left-panel, .right-panel {
+        width: 100%;
+    }
+
+    .reviews {
+        max-height: 300px;
+    }
+
+    .rating {
+        font-size: 1rem;
+    }
+}
+
+
+.similar-and-reviews {
+    width: 100%;
+    margin: 0;
+    padding: 0px 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.similar-and-reviews h2 {
+    font-family: 'myFontBold', sans-serif;
+    color: var(--fourth-color);
+    margin-bottom: 1rem;
+}
+
+.carousel-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.carousel-item {
+    flex: 0 0 200px; /* width of each item */
+    background-color: var(--fifth-color);
+    border-radius: var(--border-radius2);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+    padding: 1rem;
+    scroll-snap-align: start;
+    transition: transform 0.3s;
+}
+
+.carousel-item:hover {
+    transform: translateY(-5px);
+}
+
+.carousel-item img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: contain;
+    border-radius: var(--border-radius2);
+    margin-bottom: 0.5rem;
+}
+
+.carousel-item h3 {
+    font-size: 16px;
+    margin-bottom: 0.3rem;
+    color: var(--fourth-color);
+}
+
+.carousel-item .price {
+    font-size: 14px;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+}
+
+.carousel-item .rating {
+    font-size: 14px;
+    color: gold; /* stars color */
+}
