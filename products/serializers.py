@@ -15,7 +15,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "brand",
             "category",
-            "subCategory",
+            "subcategory",  
             "price",
             "stock",
             "image",

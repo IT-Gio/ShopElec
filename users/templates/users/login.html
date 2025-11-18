@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login - My Shop{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Messages from signup redirect -->
+<div id="messages-container">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Main login section -->
+<main class="login-page">
+    <section class="login-container">
+        <h1>Login to Your Account</h1>
+
+        <form id="login-form" class="login-form" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+
+
+            <button type="submit" class="btn-submit">Login</button>
+        </form>
+
+        <p class="signup-link">
+            Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
+        </p>
+    </section>
+</main>
+
+{% endblock %}

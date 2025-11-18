@@ -19,14 +19,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from django.contrib import admin
+from orders import views 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # Main shop homepage and product listings
     path('', include('products.urls')),
 
-    
-    
+    path("product/<int:product_id>/", views.view_more, name="view_more"),
 
+    # User accounts (login/signup/logout)
+    path('users/', include('users.urls')),
+
+    # Orders and payment
+    path('orders/', include('orders.urls')),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Logged Out - My Shop{% endblock %}
+
+{% block content %}
+<div class="logout-container">
+    <h2>You have been logged out</h2>
+    <p>Thanks for visiting. Come back soon!</p>
+    <a href="{% url 'home' %}" class="btn">Go back to Home</a>
+</div>
+{% endblock %}

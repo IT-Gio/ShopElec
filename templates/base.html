@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}My Shop{% endblock %}</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <button class="burger" id="burger">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <a href="{% url 'home' %}" class="logo">My Shop</a>
+
+        <a href="{% url 'cart' %}" class="cart-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span id="cart-count" style="display:none;">0</span>
+        </a>
+
+        <div class="nav-links" id="nav-links">
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'logout' %}" class="logout-form">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+            {% else %}
+            <a href="{% url 'login' %}" class="active">Login</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
+            {% endif %}
+            
+        </div>
+    </nav>
+
+    <!-- Logout confirmation popup -->
+    <div id="logout-popup" class="popup-overlay" style="display:none;">
+        <div class="popup-box">
+            <p>Are you sure you want to log out?</p>
+            <button id="confirm-logout" data-logout-url="{% url 'logout' %}">Yes, Log out</button>
+            <button id="cancel-logout">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Page-specific content -->
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Common JS -->
+    <script src="{% static 'js/common.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

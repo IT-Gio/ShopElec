@@ -98,18 +98,7 @@ main {
     color: var(--fourth-color);
 }
 
-/* Rating Stars */
-.rating {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 1.2rem;
-    color: var(--primary-color);
-}
 
-.rating i {
-    color: var(--primary-color);
-}
 
 /* Add Review Section */
 .add-review {
@@ -228,4 +217,114 @@ main {
 .carousel-item .rating {
     font-size: 14px;
     color: gold; /* stars color */
+}
+
+
+
+.description p, .add-review p {
+    margin-top: 15px;
+}
+
+/* Default style */
+.toCart {
+  display: inline-block; 
+  cursor: pointer;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* When disabled → hide it smoothly */
+.toCart:disabled {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none; /* prevent clicks */
+  visibility: hidden;
+}
+
+/* Optional hover effect for enabled button */
+.toCart:not(:disabled):hover {
+  transform: scale(1.1);
+}
+
+.backBtn-addBtn {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+
+/* review */
+
+#review-form {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+}
+#review-form label {
+    margin: 10px 0px;
+    color: var(--fourth-color);
+    font-family: 'myFontBold', sans-serif;
+}
+#review-rating {
+    width: 50px;
+    height: 30px;
+    padding: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius2);
+}
+#review-comment {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 15px;
+    resize: none;
+}
+.label-wrap1 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    width: 70%;
+}
+.label-wrap2 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    width: 30%;
+}
+#review-form button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: var(--fifth-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-family: 'myFontBold', sans-serif;
+}
+
+
+/* comments */
+.reviews {
+    width: 40%;
+    overflow-y:auto;
+
+}
+.review-item {
+    border-bottom: 0.5px solid var(--fourth-color);
+    border-radius: var(--border-radius2);
+    padding: 20px;
+    background-color: var(--fifth-color);
+    margin-bottom: 10px;
+    height: auto;
+    max-width: 97%;
+    word-break: break-all;
+}
+.user-comment-wrap{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.rating {
+    font-size: 1.5rem !important;
 }

@@ -1,62 +1,99 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cart - My Shop</title>
-    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    
-    <script src="{% static 'js/cart.js' %}" defer></script>
-</head>
-<body>
-    <header>
-        <nav class="navbar">
-            <a href="/" class="logo">My Shop</a>
-            <a href="/cart/" class="cart-btn">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cart-count" style="display:none;">0</span>
-            </a>
-        </nav>
-    </header>
 
-    <main>
-        <h1>Your Cart</h1>
-        <div class="mainWrap">
-            <p class="cartNote">
-                Note: You can update quantities or remove items directly from the cart. 
-                Click "Checkout" to proceed with your order. 14-day return policy on all items.
-                in case of any issues, please contact us at: <a href="#" class="linkMail">example@company.biz</a>
-                return policy varies by product, see individual product pages for details.
+{% block title %}Cart - My Shop{% endblock %}
 
-                here at My Shop, we strive to provide the best online shopping experience.
-                get free shipping on orders over 300$, and enjoy exclusive member discounts.
-                log in to your account to view order history and track shipments.
-                thank you for shopping with us!
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
 
-                
-            </p>
-            <div class="contAndSumWrap">
-                <div id="cart-container"></div>
-                <div id="cart-summary">
-                    <h2>Summary</h2>
-                    <p>Total Items: <span id="total-items">0</span></p>
-                    <p>Total Price: $<span id="total-price">0.00</span></p>
-                    <button id="checkout-btn">Checkout</button>
-                </div>
-            </div>
-            <div class="discountApply">
-                <h1>Discount:</h1>
-                <input type="text" id="discount-code" placeholder="Enter discount code">
-                <button id="apply-discount-btn">Apply</button>
-            </div>
-        </div>
-        
-        
-    </main>
-</body>
-</html>
+{% block content %}
+
+<!-- Payment Popup -->
+<div id="payment-popup" class="popup hidden">
+  <div class="popup-content">
+    <h2>Checkout</h2>
+    <form id="payment-form" method="POST" action="{% url 'orders:complete_order' %}">
+      {% csrf_token %}
+      <label for="address">Shipping Address</label>
+      <input type="text" name="address" id="address" placeholder="Enter your address" required>
+
+      <label for="card-element">Card Information</label>
+      <div id="card-element-wrapper" style="padding:12px; border-radius:6px; background-color: var(--fifth-color);">
+        <div id="card-element"></div>
+      </div>
+      <div id="card-errors" role="alert" style="color:red; margin-top:5px;"></div>
+
+      <button id="submit" type="submit">Pay</button>
+    </form>
+    <button type="button" id="close-payment-popup">Close</button>
+  </div>
+</div>
+
+<main>
+  <div id="messages-container">
+      {% if messages %}
+          {% for message in messages %}
+          <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+              {{ message }}
+              <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+          </div>
+          {% endfor %}
+      {% endif %}
+  </div>
+  <h1>Your Cart</h1>
+  <div class="mainWrap">
+    <p class="cartNote">
+      Note: You can update quantities or remove items directly from the cart.
+      Click "Checkout" to proceed with your order. 14-day return policy on all items.
+      In case of any issues, please contact us at:
+      <a href="mailto:producttest148@gmail.com" class="linkMail">producttest148@gmail.com</a>.
+      Return policy varies by product — see individual product pages for details.
+
+      Here at My Shop, we strive to provide the best online shopping experience.
+      Enjoy exclusive member discounts.
+      Log in to your account to view order history and track shipments.
+      Thank you for shopping with us!
+    </p>
+
+    <div class="contAndSumWrap">
+      <!-- Cart container rendered by JS -->
+      <div id="cart-container">
+        <p>Loading your cart...</p>
+      </div>
+
+      <!-- Summary -->
+      <div id="cart-summary">
+        <h2>Summary</h2>
+        <p>Total Items: <span id="total-items">0</span></p>
+        <p>Subtotal: $<span id="subtotal-price">0.00</span></p>
+        <p>Discount: $<span id="discount-amount">0.00</span></p>
+        <p>Total Price: $<span id="total-price">0.00</span></p>
+        <p id="coupon-applied" style="color:green; font-weight:bold;"></p>
+        <button id="checkout-btn" data-stripe-key="{{ STRIPE_PUBLIC_KEY }}" disabled>Checkout</button>
+      </div>
+      
+    </div>
+
+    <!-- Discount -->
+    <div class="discountApply">
+      <h1>Discount:</h1>
+      <form method="POST" action="{% url 'orders:apply_coupon' %}">
+        {% csrf_token %}
+        <input type="text" name="discount_code" id="discount-code" placeholder="Enter discount code">
+        <button type="submit" id="apply-discount-btn">Apply</button>
+      </form>
+    </div>   
+  </div>
+</main>
 
 
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'js/cart.js' %}"></script>  <!-- your JS file name -->
+
+{% endblock %}

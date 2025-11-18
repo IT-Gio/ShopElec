@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load static %}
+{% load math_extras %}
+
+{% block title %}{{ product.name }} - My Shop{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/viewMore.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="backBtn-addBtn">
+    <div class="go-back">
+        <a href="{% url 'home' %}" class="back-btn">⬅ Go Back</a>
+    </div>
+
+    <button class="toCart" id="toCart"
+        data-product='{
+            "id": {{ product.id }},
+            "name": "{{ product.name|escapejs }}",
+            "price": {{ product.price }},
+            "image": "{% if product.image %}{{ product.image.url|escapejs }}{% else %}""{% endif %}"
+        }'>
+        <i class="fa-solid fa-cart-plus cartIcon"></i>
+    </button>
+</div>
+
+<main class="product-page">
+    <div class="left-panel">
+        {% if product.image %}
+        <div class="product-image">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        </div>
+        {% endif %}
+
+        <div class="description">
+            <h2>Description</h2>
+            <div class="hr"></div>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <div class="product-info">
+            <h1>{{ product.name }}</h1>
+            <div class="hr"></div>
+
+            {% if product.brand %}<p><strong>Brand:</strong> {{ product.brand.name }}</p>{% endif %}
+            {% if product.category %}<p><strong>Category:</strong> {{ product.category.name }}</p>{% endif %}
+            {% if product.subcategory %}<p><strong>Subcategory:</strong> {{ product.subcategory.name }}</p>{% endif %}
+
+            <p class="stock">{% if product.stock > 0 %}In Stock{% else %}Out of Stock{% endif %}</p>
+
+            <p class="rating">
+                <span class="stars">
+                    {% for star in product.avg_rating|stars10to5 %}
+                        {% if star == "full" %}
+                            <i class="fa-solid fa-star rating"></i>
+                        {% elif star == "half" %}
+                            <i class="fa-solid fa-star-half-stroke rating"></i>
+                        {% else %}
+                            <i class="fa-regular fa-star rating"></i>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+            </p>
+
+            <p class="price"><strong>Price:</strong> ${{ product.price }}</p>
+        </div>
+
+        <!-- Review Form -->
+        <div class="add-review" id="review-form-container">
+            <h2>Add a Review</h2>
+            <div class="hr"></div>
+
+            {% if user.is_authenticated %}
+                {% if purchased_order_id %}
+                    <form id="review-form" action="{% url 'orders:add_order_review' product.id purchased_order_id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="label-wrap2">
+                            <label for="rating">Rating (1-10):</label>
+                            <input type="number" name="rating" id="review-rating" min="1" max="10" required>
+                            <button type="submit">Submit</button>
+                        </div>
+                        <div class="label-wrap1">
+                            <label for="comment">Comment:</label>
+                            <textarea name="comment" id="review-comment" placeholder="Write your review here..." rows="4"></textarea>
+                        </div>
+                    </form>
+                {% else %}
+                    <p>Purchase required to leave a review.</p>
+                {% endif %}
+            {% else %}
+                <p>Login & purchase required to leave a review.</p>
+            {% endif %}
+        </div>
+    </div>
+</main>
+
+<div class="similar-and-reviews">
+    <!-- Reviews Section -->
+    <section class="reviews">
+        <h2>Reviews</h2>
+        <div id="reviews-list">
+            {% for review in product.order_reviews.all %}
+                <div class="review-item">
+                    <div class="user-comment-wrap">
+                        <strong>{{ review.user.username }}</strong>
+                        <span class="stars">
+                            {% for star in review.rating|stars10to5 %}
+                                {% if star == "full" %}
+                                    <i class="fa-solid fa-star rating"></i>
+                                {% elif star == "half" %}
+                                    <i class="fa-solid fa-star-half-stroke rating"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-star rating"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    </div>
+                    <hr class="hr">
+                    <p>{{ review.comment }}</p>
+                </div>
+            {% empty %}
+                <p>No reviews yet.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Similar Products Carousel -->
+    <section class="similar-products">
+        <h2>Similar Products</h2>
+        <div class="carousel-container">
+            {% for item in similar_products %}
+                <div class="carousel-item">
+                    <a href="{% url 'orders:view_more' item.id %}">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                        {% endif %}
+                        <h3>{{ item.name }}</h3>
+                    </a>
+                    <p class="price">${{ item.price }}</p>
+                    <p class="rating">
+                        <span class="stars">
+                            {% for star in item.avg_rating|stars10to5 %}
+                                {% if star == "full" %}
+                                    <i class="fa-solid fa-star rating"></i>
+                                {% elif star == "half" %}
+                                    <i class="fa-solid fa-star-half-stroke rating"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-star rating"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                    </p>
+                </div>
+            {% empty %}
+                <p>No similar products found.</p>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+<script src="{% static 'js/toCart.js' %}"></script>
+<script src="{% static 'js/review.js' %}"></script>
+{% endblock %}
