@@ -1,0 +1,7 @@
+Django>=4.2,<5.0
+stripe>=6.55.0
+gunicorn>=21.2.0
+python-dotenv>=1.0.0
+pytz>=2023.3
+asgiref>=3.7.2
+sqlparse>=0.4.4
